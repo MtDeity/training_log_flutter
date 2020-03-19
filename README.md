@@ -30,6 +30,6 @@ Flutterで作成した筋トレ記録管理アプリです。APIはバックエ�
 
 ## アプリケーション内で使用している技術一覧
 
-言語：Dart
-フレームワーク：Flutter
-ライブラリ：Provider, http, shared_preferences等
+- 言語：Dart
+- フレームワーク：Flutter
+- ライブラリ：Provider, http, shared_preferences等
