@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => Data(),
       child: MaterialApp(
-        initialRoute: TrainingScreen.id,
+//        initialRoute: RegistrationScreen.id,
+        initialRoute: LoginScreen.id,
         routes: {
           RegistrationScreen.id: (context) => RegistrationScreen(),
           LoginScreen.id: (context) => LoginScreen(),
