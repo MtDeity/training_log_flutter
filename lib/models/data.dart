@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:training_log_flutter/constants.dart';
+import 'package:training_log_flutter/screens/training_screen.dart';
 
 class Data extends ChangeNotifier {
   String loginEmail = '';
