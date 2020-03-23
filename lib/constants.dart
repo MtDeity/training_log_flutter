@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 
-Color kDarkBlue = Color(0xFF286BFF);
-InputDecoration kRegistrationInputDecoration = InputDecoration(
+const kUrl = 'https://mukimukiroku.herokuapp.com';
+const kDarkBlue = Color(0xFF286BFF);
+const kRegistrationInputDecoration = InputDecoration(
   border: OutlineInputBorder(
     borderSide: BorderSide(
       color: Colors.grey,
     ),
-    borderRadius: BorderRadius.circular(13.0),
+    borderRadius: BorderRadius.all(
+      Radius.circular(13.0),
+    ),
   ),
   focusedBorder: OutlineInputBorder(
     borderSide: BorderSide(
       color: Colors.grey,
     ),
-    borderRadius: BorderRadius.circular(13.0),
+    borderRadius: BorderRadius.all(
+      Radius.circular(13.0),
+    ),
   ),
 );
