@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:training_log_flutter/constants.dart';
 
 class Data extends ChangeNotifier {
@@ -39,8 +40,17 @@ class Data extends ChangeNotifier {
     try {
       final dynamic json = await loginData();
       if (json != null) {
-        print(json['id']);
-        print(json['token']);
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setInt('id', json['id']);
+        prefs.setString('token', json['token']);
+
+        final int id = prefs.getInt('id') ?? 0;
+        final String token = prefs.getString('token') ?? '';
+        print(id);
+        print(token);
+
+        prefs.remove('id');
+        prefs.remove('token');
       }
     } catch (e) {
       print(e);
