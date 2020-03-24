@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:training_log_flutter/models/data.dart';
 import 'package:training_log_flutter/screens/login_screen.dart';
 import 'package:training_log_flutter/screens/registration_screen.dart';
+import 'package:training_log_flutter/screens/start_screen.dart';
 import 'package:training_log_flutter/screens/training_screen.dart';
 
 void main() => runApp(MyApp());
@@ -14,8 +15,9 @@ class MyApp extends StatelessWidget {
       create: (context) => Data(),
       child: MaterialApp(
 //        initialRoute: RegistrationScreen.id,
-        initialRoute: LoginScreen.id,
+        initialRoute: StartScreen.id,
         routes: {
+          StartScreen.id: (context) => StartScreen(),
           RegistrationScreen.id: (context) => RegistrationScreen(),
           LoginScreen.id: (context) => LoginScreen(),
           TrainingScreen.id: (context) => TrainingScreen(),

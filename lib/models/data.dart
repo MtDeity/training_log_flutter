@@ -5,9 +5,12 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:training_log_flutter/constants.dart';
+import 'package:training_log_flutter/screens/login_screen.dart';
 import 'package:training_log_flutter/screens/training_screen.dart';
 
 class Data extends ChangeNotifier {
+  bool isLoggedIn = false;
+
   bool loginShowSpinner = false;
   String loginEmail = '';
   String loginPassword = '';
@@ -18,6 +21,14 @@ class Data extends ChangeNotifier {
   String registrationPasswordConfirmation = '';
   bool isPublic = false;
   bool isPrivate = true;
+
+  void createIsLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String token = prefs.getString('token') ?? '';
+    if (token.isNotEmpty) {
+      isLoggedIn = true;
+    }
+  }
 
   void loginSpinnerToggle() {
     loginShowSpinner = !loginShowSpinner;

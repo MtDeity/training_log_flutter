@@ -13,13 +13,14 @@ class LoginScreen extends StatelessWidget {
     return Consumer<Data>(
       builder: (context, data, child) {
         return Scaffold(
+          appBar: AppBar(
+            backgroundColor: kDarkBlue,
+            title: Text('ログイン'),
+          ),
           body: ModalProgressHUD(
             inAsyncCall: data.loginShowSpinner,
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 50.0,
-                horizontal: 20.0,
-              ),
+              padding: EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[

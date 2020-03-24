@@ -13,6 +13,7 @@ class RegistrationScreen extends StatelessWidget {
       builder: (context, data, child) {
         return Scaffold(
           appBar: AppBar(
+            backgroundColor: kDarkBlue,
             title: Text('新規登録'),
           ),
           body: ModalProgressHUD(
@@ -81,9 +82,6 @@ class RegistrationScreen extends StatelessWidget {
                         hintText: 'パスワードを再度入力してください',
                       ),
                     ),
-                    SizedBox(
-                      height: 15.0,
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -103,9 +101,9 @@ class RegistrationScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-
-                    // ToDo リファクタリング
-
+                    SizedBox(
+                      height: 15.0,
+                    ),
                     RaisedButton(
                       padding: EdgeInsets.all(20.0),
                       child: Text(
