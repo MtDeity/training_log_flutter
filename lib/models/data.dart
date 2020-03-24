@@ -12,6 +12,8 @@ class Data extends ChangeNotifier {
   String loginPassword = '';
   bool loginShowSpinner = false;
   bool registrationShowSpinner = false;
+  bool isPublic = false;
+  bool isPrivate = true;
 
   void loginSpinnerToggle() {
     loginShowSpinner = !loginShowSpinner;
@@ -61,5 +63,11 @@ class Data extends ChangeNotifier {
       print(e);
     }
     loginSpinnerToggle();
+  }
+
+  void privateSwitchDone(value) {
+    isPublic = value;
+    isPrivate = !value;
+    notifyListeners();
   }
 }
