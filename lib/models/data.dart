@@ -5,8 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:training_log_flutter/constants.dart';
-import 'package:training_log_flutter/screens/login_screen.dart';
 import 'package:training_log_flutter/screens/training_screen.dart';
+
+//Todo createIsLoggedInが機能していなかったので修正
 
 class Data extends ChangeNotifier {
   int id;
@@ -25,11 +26,15 @@ class Data extends ChangeNotifier {
   bool isPrivate = true;
 
   void createIsLoggedIn() async {
-    final prefs = await SharedPreferences.getInstance();
-    id = prefs.getInt('id') ?? 0;
-    token = prefs.getString('token') ?? '';
-    if (token.isNotEmpty) {
-      isLoggedIn = true;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      id = prefs.getInt('id') ?? 0;
+      token = prefs.getString('token') ?? '';
+      if (token.isNotEmpty) {
+        isLoggedIn = true;
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -68,24 +73,27 @@ class Data extends ChangeNotifier {
     try {
       final dynamic json = await loginData();
       if (json != null) {
-        final prefs = await SharedPreferences.getInstance();
-        prefs.setInt('id', json['id']);
-        prefs.setString('token', json['token']);
-
-        final int id = prefs.getInt('id') ?? 0;
-        final String token = prefs.getString('token') ?? '';
-        print(id);
-        print(token);
-
-        prefs.remove('id');
-        prefs.remove('token');
-
+        writeToken(json);
         Navigator.pushNamed(context, TrainingScreen.id);
       }
     } catch (e) {
       print(e);
     }
     loginSpinnerToggle();
+  }
+
+  void writeToken(dynamic json) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setInt('id', json['id']);
+    prefs.setString('token', json['token']);
+
+//        final int id = prefs.getInt('id') ?? 0;
+//        final String token = prefs.getString('token') ?? '';
+//        print(id);
+//        print(token);
+//
+//    prefs.remove('id');
+//    prefs.remove('token');
   }
 
   void privateSwitchDone(value) {
@@ -123,18 +131,7 @@ class Data extends ChangeNotifier {
     try {
       final dynamic json = await registrationData();
       if (json != null) {
-        final prefs = await SharedPreferences.getInstance();
-        prefs.setInt('id', json['id']);
-        prefs.setString('token', json['token']);
-
-//        final int id = prefs.getInt('id') ?? 0;
-//        final String token = prefs.getString('token') ?? '';
-//        print(id);
-//        print(token);
-//
-//        prefs.remove('id');
-//        prefs.remove('token');
-
+        writeToken(json);
         Navigator.pushNamed(context, TrainingScreen.id);
       }
     } catch (e) {
@@ -156,5 +153,21 @@ class Data extends ChangeNotifier {
     } else {
       throw Exception('Failed to load');
     }
+  }
+
+  void printExercises() async {
+    dynamic exercises = await getExercises();
+    print(exercises);
+  }
+
+  void readToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final int id = prefs.getInt('id') ?? 0;
+    final String token = prefs.getString('token') ?? '';
+    print(id);
+    print(token);
+//
+//        prefs.remove('id');
+//        prefs.remove('token');
   }
 }
