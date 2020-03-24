@@ -8,15 +8,24 @@ import 'package:training_log_flutter/constants.dart';
 import 'package:training_log_flutter/screens/training_screen.dart';
 
 class Data extends ChangeNotifier {
+  bool loginShowSpinner = false;
   String loginEmail = '';
   String loginPassword = '';
-  bool loginShowSpinner = false;
+
   bool registrationShowSpinner = false;
+  String registrationEmail = '';
+  String registrationPassword = '';
+  String registrationPasswordConfirmation = '';
   bool isPublic = false;
   bool isPrivate = true;
 
   void loginSpinnerToggle() {
     loginShowSpinner = !loginShowSpinner;
+    notifyListeners();
+  }
+
+  void registrationSpinnerToggle() {
+    registrationShowSpinner = !registrationShowSpinner;
     notifyListeners();
   }
 
@@ -69,5 +78,53 @@ class Data extends ChangeNotifier {
     isPublic = value;
     isPrivate = !value;
     notifyListeners();
+  }
+
+  Future<dynamic> registrationData() async {
+    final http.Response response = await http.post(
+      '$kUrl/sign_up',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, Map<String, String>>{
+        "sign_up_params": {
+          "name": registrationEmail.split('@')[0],
+          "email": registrationEmail,
+          "password": registrationPassword,
+          "password_confirmation": registrationPasswordConfirmation,
+          "user_private": isPrivate.toString(),
+        }
+      }),
+    );
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load');
+    }
+  }
+
+  void registration(BuildContext context) async {
+    registrationSpinnerToggle();
+    try {
+      final dynamic json = await registrationData();
+      if (json != null) {
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setInt('id', json['id']);
+        prefs.setString('token', json['token']);
+
+        final int id = prefs.getInt('id') ?? 0;
+        final String token = prefs.getString('token') ?? '';
+        print(id);
+        print(token);
+
+        prefs.remove('id');
+        prefs.remove('token');
+
+        Navigator.pushNamed(context, TrainingScreen.id);
+      }
+    } catch (e) {
+      print(e);
+    }
+    registrationSpinnerToggle();
   }
 }

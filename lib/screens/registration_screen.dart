@@ -37,7 +37,7 @@ class RegistrationScreen extends StatelessWidget {
                       keyboardType: TextInputType.emailAddress,
                       obscureText: false,
                       onChanged: (value) {
-                        data.loginEmail = value;
+                        data.registrationEmail = value;
                       },
                       style: TextStyle(
                         fontSize: 18.0,
@@ -54,7 +54,7 @@ class RegistrationScreen extends StatelessWidget {
                       keyboardType: TextInputType.visiblePassword,
                       obscureText: true,
                       onChanged: (value) {
-                        data.loginPassword = value;
+                        data.registrationPassword = value;
                       },
                       style: TextStyle(
                         fontSize: 18.0,
@@ -71,7 +71,7 @@ class RegistrationScreen extends StatelessWidget {
                       keyboardType: TextInputType.visiblePassword,
                       obscureText: true,
                       onChanged: (value) {
-                        data.loginPassword = value;
+                        data.registrationPasswordConfirmation = value;
                       },
                       style: TextStyle(
                         fontSize: 18.0,
@@ -104,11 +104,6 @@ class RegistrationScreen extends StatelessWidget {
                       ],
                     ),
 
-                    // ToDo ログイン失敗しても画面遷移するバグ直す（ログイン・新規登録）
-                    // ToDo パスワード確認用
-                    // ToDo Toggleプロフィールを公開する
-                    // ToDo 新規登録レイアウトとしてコミット
-                    // ToDo 通信処理追加
                     // ToDo リファクタリング
 
                     RaisedButton(
@@ -126,7 +121,7 @@ class RegistrationScreen extends StatelessWidget {
                       ),
                       color: kDarkBlue,
                       onPressed: () {
-                        data.login(context);
+                        data.registration(context);
                       },
                     ),
                   ],
