@@ -11,6 +11,7 @@ class Data extends ChangeNotifier {
   String loginEmail = '';
   String loginPassword = '';
   bool loginShowSpinner = false;
+  bool registrationShowSpinner = false;
 
   void loginSpinnerToggle() {
     loginShowSpinner = !loginShowSpinner;
@@ -37,7 +38,7 @@ class Data extends ChangeNotifier {
     }
   }
 
-  void login() async {
+  void login(BuildContext context) async {
     loginSpinnerToggle();
     try {
       final dynamic json = await loginData();
@@ -53,6 +54,8 @@ class Data extends ChangeNotifier {
 
         prefs.remove('id');
         prefs.remove('token');
+
+        Navigator.pushNamed(context, TrainingScreen.id);
       }
     } catch (e) {
       print(e);

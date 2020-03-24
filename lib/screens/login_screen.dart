@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:training_log_flutter/constants.dart';
 import 'package:training_log_flutter/models/data.dart';
 import 'package:training_log_flutter/screens/registration_screen.dart';
-import 'package:training_log_flutter/screens/training_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String id = 'login_screen';
@@ -83,8 +82,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     color: kDarkBlue,
                     onPressed: () {
-                      data.login();
-                      Navigator.pushNamed(context, TrainingScreen.id);
+                      data.login(context);
                     },
                   ),
                   FlatButton(
