@@ -18,7 +18,10 @@ class TrainingScreen extends StatelessWidget {
               BuildContext context,
               AsyncSnapshot<List<Exercise>> snapshot,
             ) {
-              if (snapshot.hasData) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasError) {
+                  print('snapshot.hasError');
+                }
                 return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, index) {
@@ -32,22 +35,10 @@ class TrainingScreen extends StatelessWidget {
                   },
                 );
               } else {
-                return Center(child: Text("読み込み中"));
+                return Center(child: CircularProgressIndicator());
               }
             },
           ),
-//          body: ListView.builder(
-//            itemCount: data.exerciseList.length,
-//            itemBuilder: (context, index) {
-//              return Card(
-//                child: ListTile(
-//                  leading: Image.asset(
-//                      'images/${data.exerciseList[index].category}.png'),
-//                  title: Text('${data.exerciseList[index].name}'),
-//                ),
-//              );
-//            },
-//          ),
         );
       },
     );

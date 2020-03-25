@@ -24,7 +24,7 @@ class Data extends ChangeNotifier {
   bool isPublic = false;
   bool isPrivate = true;
 
-  void createIsLoggedIn() async {
+  Future<bool> createIsLoggedIn() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       id = prefs.getInt('id') ?? 0;
@@ -35,6 +35,7 @@ class Data extends ChangeNotifier {
     } catch (e) {
       print(e);
     }
+    return isLoggedIn;
   }
 
   void loginSpinnerToggle() {

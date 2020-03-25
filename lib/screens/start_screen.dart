@@ -11,12 +11,25 @@ class StartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<Data>(
       builder: (context, data, child) {
-        data.createIsLoggedIn();
-        if (data.isLoggedIn) {
-          return TrainingScreen();
-        } else {
-          return LoginScreen();
-        }
+        return FutureBuilder(
+            future: data.createIsLoggedIn(),
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<bool> snapshot,
+            ) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasError) {
+                  print('snapshot.hasError');
+                }
+                if (snapshot.data) {
+                  return TrainingScreen();
+                } else {
+                  return LoginScreen();
+                }
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            });
       },
     );
   }
