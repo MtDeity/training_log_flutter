@@ -5,9 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:training_log_flutter/constants.dart';
+import 'package:training_log_flutter/models/exercise.dart';
 import 'package:training_log_flutter/screens/training_screen.dart';
-
-//Todo createIsLoggedInが機能していなかったので修正
 
 class Data extends ChangeNotifier {
   int id;
@@ -140,7 +139,7 @@ class Data extends ChangeNotifier {
     registrationSpinnerToggle();
   }
 
-  Future<dynamic> getExercises() async {
+  Future<dynamic> getExercisesData() async {
     final http.Response response = await http.get(
       '$kUrl/exercises',
       headers: <String, String>{
@@ -155,19 +154,37 @@ class Data extends ChangeNotifier {
     }
   }
 
-  void printExercises() async {
-    dynamic exercises = await getExercises();
-    print(exercises);
-  }
+  Future<List<Exercise>> getExercisesList() async {
+    List<dynamic> exercises = await getExercisesData();
+    List<Exercise> exerciseList = [];
+    for (int i = 0; i < exercises.length; i++) {
+      int id = exercises[i]['id'];
+      String name = exercises[i]['name'];
+      String category = exercises[i]['category'];
 
-  void readToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    final int id = prefs.getInt('id') ?? 0;
-    final String token = prefs.getString('token') ?? '';
-    print(id);
-    print(token);
-//
-//        prefs.remove('id');
-//        prefs.remove('token');
+      switch (category) {
+        case 'バーベル':
+          category = 'barbell';
+          break;
+        case '自重':
+          category = 'bodyweight';
+          break;
+        case 'ウェイトリフティング':
+          category = 'weightlifting';
+          break;
+        case 'ダンベル':
+          category = 'dumbbell';
+          break;
+        case 'マシン':
+          category = 'machine';
+          break;
+        default:
+          category = '';
+      }
+
+      Exercise exercise = Exercise(id: id, name: name, category: category);
+      exerciseList.add(exercise);
+    }
+    return exerciseList;
   }
 }
