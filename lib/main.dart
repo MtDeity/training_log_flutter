@@ -14,7 +14,6 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => Data(),
       child: MaterialApp(
-//        initialRoute: RegistrationScreen.id,
         initialRoute: StartScreen.id,
         routes: {
           StartScreen.id: (context) => StartScreen(),

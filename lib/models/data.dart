@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:training_log_flutter/constants.dart';
 import 'package:training_log_flutter/models/exercise.dart';
@@ -23,6 +24,12 @@ class Data extends ChangeNotifier {
   String registrationPasswordConfirmation = '';
   bool isPublic = false;
   bool isPrivate = true;
+
+  bool liftShowSpinner = false;
+  TextEditingController liftWeightController = TextEditingController();
+  TextEditingController liftRepsController = TextEditingController();
+  TextEditingController liftSetsController = TextEditingController();
+  TextEditingController liftDateController = TextEditingController();
 
   Future<bool> createIsLoggedIn() async {
     try {
@@ -45,6 +52,11 @@ class Data extends ChangeNotifier {
 
   void registrationSpinnerToggle() {
     registrationShowSpinner = !registrationShowSpinner;
+    notifyListeners();
+  }
+
+  void liftSpinnerToggle() {
+    liftShowSpinner = !liftShowSpinner;
     notifyListeners();
   }
 
@@ -187,5 +199,81 @@ class Data extends ChangeNotifier {
       exerciseList.add(exercise);
     }
     return exerciseList;
+  }
+
+  void removeToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('id');
+    prefs.remove('token');
+  }
+
+  void cleanController() {
+    liftWeightController = TextEditingController();
+    liftRepsController = TextEditingController();
+    liftSetsController = TextEditingController();
+    liftDateController = TextEditingController();
+    liftDateController.text = DateFormat('yyyy/MM/dd').format(DateTime.now());
+  }
+
+  void updateDate(DateTime date) {
+    liftDateController.text = DateFormat('yyyy/MM/dd').format(date);
+  }
+
+  Future<dynamic> liftData(int exerciseId) async {
+    final http.Response response = await http.post(
+      '$kUrl/exercises/$exerciseId/score',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(
+        <String, Map<String, String>>{
+          "score_params": {
+            "weight": liftWeightController.text,
+            "repetitions": liftRepsController.text,
+            "sets": liftSetsController.text,
+            "date": liftDateController.text,
+          },
+        },
+      ),
+    );
+    if (response.statusCode == 201) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load');
+    }
+  }
+
+  void lift(BuildContext context, int exerciseId) async {
+    liftSpinnerToggle();
+    try {
+      final http.Response response = await http.post(
+        '$kUrl/exercises/$exerciseId/score',
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(
+          <String, Map<String, String>>{
+            "score_params": {
+              "weight": liftWeightController.text,
+              "repetitions": liftRepsController.text,
+              "sets": liftSetsController.text,
+              "date": liftDateController.text,
+            },
+          },
+        ),
+      );
+      if (response.statusCode == 201) {
+        Navigator.pop(context);
+      } else {
+        throw Exception('Failed to load');
+      }
+    } catch (e) {
+      print(e);
+    }
+    liftSpinnerToggle();
+
+    // ToDo.5 Providerでコントローラーをdisposeする方法調べる
   }
 }

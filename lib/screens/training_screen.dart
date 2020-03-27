@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:training_log_flutter/models/data.dart';
 import 'package:training_log_flutter/models/exercise.dart';
+import 'package:training_log_flutter/screens/add_lifts_screen.dart';
 
 class TrainingScreen extends StatelessWidget {
   static const String id = 'training_screen';
@@ -30,6 +31,14 @@ class TrainingScreen extends StatelessWidget {
                         leading: Image.asset(
                             'images/${snapshot.data[index].category}.png'),
                         title: Text('${snapshot.data[index].name}'),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            _createRoute(
+                              snapshot.data[index].id,
+                              snapshot.data[index].name,
+                            ),
+                          );
+                        },
                       ),
                     );
                   },
@@ -43,4 +52,23 @@ class TrainingScreen extends StatelessWidget {
       },
     );
   }
+}
+
+Route _createRoute(int id, String name) {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        AddLiftsScreen(id: id, name: name),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      var begin = Offset(0.0, 1.0);
+      var end = Offset.zero;
+      var curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
 }
