@@ -118,7 +118,6 @@ class AddLiftsScreen extends StatelessWidget {
                   color: kDarkBlue,
                   onPressed: () {
                     data.lift(context, id);
-                    Navigator.pop(context);
                   },
                 ),
               ],

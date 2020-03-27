@@ -273,7 +273,11 @@ class Data extends ChangeNotifier {
       print(e);
     }
     liftSpinnerToggle();
-
-    // ToDo.5 Providerでコントローラーをdisposeする方法調べる
   }
+
+// ToDo.1 Providerでコントローラーをdisposeする方法調べる
+// ToDo.2 記録確認ページ作る
+// ToDo.3 記録確認ページにFABで記録ページに飛ぶ
+// ToDo.4 記録確認ページで全記録をリストまたはテーブル表示
+
 }

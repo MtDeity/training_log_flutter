@@ -7,7 +7,6 @@ import 'package:training_log_flutter/screens/add_lifts_screen.dart';
 class TrainingScreen extends StatelessWidget {
   static const String id = 'training_screen';
 
-  final items = List<String>.generate(1000, (i) => "Item $i");
   @override
   Widget build(BuildContext context) {
     return Consumer<Data>(

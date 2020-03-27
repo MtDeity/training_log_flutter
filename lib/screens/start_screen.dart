@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:training_log_flutter/models/data.dart';
 import 'package:training_log_flutter/screens/login_screen.dart';
-import 'package:training_log_flutter/screens/training_screen.dart';
+import 'package:training_log_flutter/screens/training_history_screen.dart';
 
 class StartScreen extends StatelessWidget {
   static const String id = 'start_screen';
@@ -22,7 +22,7 @@ class StartScreen extends StatelessWidget {
                   print('snapshot.hasError');
                 }
                 if (snapshot.data) {
-                  return TrainingScreen();
+                  return TrainingHistoryScreen();
                 } else {
                   return LoginScreen();
                 }
