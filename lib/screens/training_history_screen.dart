@@ -15,23 +15,45 @@ class TrainingHistoryScreen extends StatelessWidget {
         return Scaffold(
           floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),
-            backgroundColor: kDarkBlue,
             onPressed: () {
               Navigator.pushNamed(context, TrainingScreen.id);
             },
           ),
           body: FutureBuilder(
-            future: data.getExercisesList(),
+            future: data.getTrainingHistoryTable(),
             builder: (
               BuildContext context,
-              AsyncSnapshot<List<Exercise>> snapshot,
+              AsyncSnapshot<dynamic> snapshot,
             ) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasError) {
                   print('snapshot.hasError');
                 }
-                return Container(
-                  color: Colors.grey,
+                return Scaffold(
+                  body: SafeArea(
+                    child: SingleChildScrollView(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: DataTable(
+                          columns: [
+                            DataColumn(
+                              label: Text('種目'),
+                            ),
+                            DataColumn(
+                              label: Text('重量'),
+                            ),
+                            DataColumn(
+                              label: Text('レップ'),
+                            ),
+                            DataColumn(
+                              label: Text('日付'),
+                            ),
+                          ],
+                          rows: snapshot.data,
+                        ),
+                      ),
+                    ),
+                  ),
                 );
               } else {
                 return Center(child: CircularProgressIndicator());
@@ -40,6 +62,33 @@ class TrainingHistoryScreen extends StatelessWidget {
           ),
         );
       },
+    );
+
+    return Scaffold(
+      body: Center(
+        child: DataTable(
+          columns: [
+            DataColumn(
+              label: Text('Name'),
+              numeric: true,
+            ),
+            DataColumn(
+              label: Text('Year'),
+              numeric: true,
+            ),
+          ],
+          rows: [
+            DataRow(cells: [
+              DataCell(Text('Dash')),
+              DataCell(Text('2018')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Gopher')),
+              DataCell(Text('2009')),
+            ]),
+          ],
+        ),
+      ),
     );
   }
 }

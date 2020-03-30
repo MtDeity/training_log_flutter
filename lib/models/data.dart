@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -275,9 +276,44 @@ class Data extends ChangeNotifier {
     liftSpinnerToggle();
   }
 
-// ToDo.1 Providerでコントローラーをdisposeする方法調べる
-// ToDo.2 記録確認ページ作る
-// ToDo.3 記録確認ページにFABで記録ページに飛ぶ
-// ToDo.4 記録確認ページで全記録をリストまたはテーブル表示
+  Future<dynamic> getTrainingHistoryData() async {
+    final http.Response response = await http.get(
+      '$kUrl/users/$id/scores',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load');
+    }
+  }
 
+  Future<List<DataRow>> getTrainingHistoryTable() async {
+// ToDo.0 データは取ってこられているが、ループかどこかでエラーが起きている模様
+// ToDo.1 記録一覧取得（以下未編集）
+// ToDo.2 種目名、重量、レップでテーブル？表示
+// ToDo.3 横スクロール対応
+// ToDo.4 日付毎にまとめたい、インデックス0か前の行と日付違ったら太線とか出来ないかな
+
+    dynamic trainingHistoryData = await getTrainingHistoryData();
+    List<DataRow> trainingHistoryList = [];
+    for (int i = 0; i < trainingHistoryData.length; i++) {
+      String exercise = trainingHistoryData[i]['exercise_id'].toString();
+      String weight = trainingHistoryData[i]['weight'].toString();
+      String reps = trainingHistoryData[i]['repetitions'].toString();
+      String date = trainingHistoryData[i]['date'].toString();
+
+      DataRow dataRow = DataRow(cells: [
+        DataCell(Text(exercise)),
+        DataCell(Text(weight)),
+        DataCell(Text(reps)),
+        DataCell(Text(date)),
+      ]);
+      trainingHistoryList.add(dataRow);
+    }
+    return trainingHistoryList;
+  }
 }
