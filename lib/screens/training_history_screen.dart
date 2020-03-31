@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:training_log_flutter/constants.dart';
 import 'package:training_log_flutter/models/data.dart';
 import 'package:training_log_flutter/screens/training_screen.dart';
 
@@ -13,6 +14,7 @@ class TrainingHistoryScreen extends StatelessWidget {
         return Scaffold(
           floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),
+            backgroundColor: kDarkBlue,
             onPressed: () {
               Navigator.pushNamed(context, TrainingScreen.id);
             },
