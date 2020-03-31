@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:training_log_flutter/constants.dart';
 import 'package:training_log_flutter/models/data.dart';
-import 'package:training_log_flutter/models/exercise.dart';
 import 'package:training_log_flutter/screens/training_screen.dart';
 
 class TrainingHistoryScreen extends StatelessWidget {
@@ -62,33 +60,6 @@ class TrainingHistoryScreen extends StatelessWidget {
           ),
         );
       },
-    );
-
-    return Scaffold(
-      body: Center(
-        child: DataTable(
-          columns: [
-            DataColumn(
-              label: Text('Name'),
-              numeric: true,
-            ),
-            DataColumn(
-              label: Text('Year'),
-              numeric: true,
-            ),
-          ],
-          rows: [
-            DataRow(cells: [
-              DataCell(Text('Dash')),
-              DataCell(Text('2018')),
-            ]),
-            DataRow(cells: [
-              DataCell(Text('Gopher')),
-              DataCell(Text('2009')),
-            ]),
-          ],
-        ),
-      ),
     );
   }
 }

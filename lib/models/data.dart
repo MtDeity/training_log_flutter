@@ -291,12 +291,29 @@ class Data extends ChangeNotifier {
     }
   }
 
+  Future<dynamic> getAllExercises() async {
+    final http.Response response = await http.get(
+      '$kUrl/exercises',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load');
+    }
+  }
+
   Future<List<DataRow>> getTrainingHistoryTable() async {
-// ToDo.0 データは取ってこられているが、ループかどこかでエラーが起きている模様
-// ToDo.1 記録一覧取得（以下未編集）
-// ToDo.2 種目名、重量、レップでテーブル？表示
-// ToDo.3 横スクロール対応
-// ToDo.4 日付毎にまとめたい、インデックス0か前の行と日付違ったら太線とか出来ないかな
+    dynamic allExercises = await getAllExercises();
+    Map exercisesMap = Map();
+    for (int i = 0; i < allExercises.length; i++) {
+      String id = allExercises[i]['id'].toString();
+      String name = allExercises[i]['name'].toString();
+      exercisesMap[id] = name;
+    }
 
     dynamic trainingHistoryData = await getTrainingHistoryData();
     List<DataRow> trainingHistoryList = [];
@@ -307,7 +324,7 @@ class Data extends ChangeNotifier {
       String date = trainingHistoryData[i]['date'].toString();
 
       DataRow dataRow = DataRow(cells: [
-        DataCell(Text(exercise)),
+        DataCell(Text(exercisesMap[exercise])),
         DataCell(Text(weight)),
         DataCell(Text(reps)),
         DataCell(Text(date)),
