@@ -4,6 +4,8 @@
 
 Flutterで作成した筋トレ記録管理アプリです。APIはバックエンド担当に用意してもらいました。
 
+![result](https://github.com/MtDeity/training_log_flutter/blob/gif/training_log.gif)
+
 ## アプリケーションの機能一覧
 
 - ユーザー登録
